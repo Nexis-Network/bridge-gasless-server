@@ -88,7 +88,7 @@ app.post("/unwrap", async (req, res) => {
     const userNztBalance = await bnztContract.balanceOf(userAddress);
 
     // if not owning bnzt revert
-    if (!ethers.utils.formatUnits(userNztBalance, 18)) {
+    if (ethers.utils.formatUnits(userNztBalance, 18).isZero()) {
       res.send({
         status: 400,
         data: {
