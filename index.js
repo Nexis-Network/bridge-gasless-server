@@ -50,6 +50,12 @@ app.post("/unwrap", async (req, res) => {
   // take from req.body
   const {userAddress,timestamp} = req.body;
 
+  // Validate user address
+  if (!ethers.utils.isAddress(userAddress)) {
+    res.status(400).json({ status: 400, data: { message: "Invalid user address" } });
+    return;
+  }
+
   const currentTimestamp = Date.now()
 
   // check if signature is generated 30 seconds ago or not
