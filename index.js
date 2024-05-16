@@ -1,8 +1,22 @@
 require('dotenv').config()
 const { ethers } = require("ethers");
 const express = require("express");
+const rateLimit = require("express-rate-limit");
 
 const app = express();
+app.use(express.json()); 
+const limiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 5,
+  message: {
+    status: 429,
+    data: {
+      message: "Too many requests, please try again later."
+    }
+  }
+});
+
+app.use(limiter);
 
 const providerUrl =process.env.RPC;
 const privateKey = process.env.PRIVATE_KEY;
@@ -32,7 +46,7 @@ app.get("/", (req, res) => {
   res.send("meta tx v1 running");
 })
 
-app.get("/unwrap", async (req, res) => {
+app.post("/unwrap", async (req, res) => {
   // take from req.body
   const {userAddress,timestamp} = req.body;
 
