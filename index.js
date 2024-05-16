@@ -43,7 +43,12 @@ const wallet = new ethers.Wallet(privateKey, provider);
 let userRequests = {}
 
 app.get("/", (req, res) => {
-  res.send("meta tx v1 running");
+  res.json({
+    status:200,
+    data:{
+      message:"meta tx v1 running"
+    }
+  });
 })
 
 app.post("/unwrap", async (req, res) => {
